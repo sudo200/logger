@@ -1,0 +1,4 @@
+#!/bin/sh
+
+g++ -pedantic -Wall -Wno-missing-braces -Wno-unused-variable -std=c++14 *.cpp
+
