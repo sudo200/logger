@@ -1,19 +1,32 @@
 #include "simple_logger.hpp"
 
+#ifdef __linux__
+#define USERNAME    "USER"
+#else
+#define USERNAME    "USERNAME"
+#endif
+
 using namespace logger;
 
-int main() {
-  Logger* logger = new SimpleLogger("main");
+class testexception : public std::exception {
+    const char * what() const noexcept {
+        return "This was a test!";
+    }
+};
 
-  logger->trace("This is at trace level!");
-  logger->debug("This is at debug level!");
-  logger->info("This is at info level!");
-  logger->warn("This is at warn level!");
-  logger->error("This is at error level!");
-  logger->fatal("This is at fatal level!");
+int main() {
+  Logger* logger = new SimpleLogger("main", logger::TRACE);
+
+  logger->trace("Msg");
+  logger->trace("Hello %s!", getenv(USERNAME));
+
+  try {
+      throw testexception();
+  } catch (std::exception& e) {
+      logger->error("Exception thrown", e);
+  }
 
   delete logger;
-
   return 0;
 }
 
