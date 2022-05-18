@@ -67,13 +67,12 @@ namespace logger {
     void SimpleLogger::print(loglevel level, const std::string &format, va_list list) {
         if (this->level < level)
             return;
-        char **str = new char *;
+        char *str;
 
-        vasprintf(str, format.c_str(), list);
-        print(level, *str);
+        vasprintf(&str, format.c_str(), list);
+        print(level, str);
 
-        free(*str);
-        delete str;
+        free(str);
     }
 
     void SimpleLogger::print(loglevel level, const std::string &msg, const std::exception &e) {
@@ -87,10 +86,14 @@ namespace logger {
     }
 
     void SimpleLogger::trace(const char *msg) {
+        if(!isTraceEnabled())
+            return;
         print(TRACE, msg);
     }
 
     void SimpleLogger::trace(const std::string &format, ...) {
+        if(!isTraceEnabled())
+            return;
         va_list l;
         va_start(l, format);
         print(TRACE, format, l);
@@ -98,15 +101,21 @@ namespace logger {
     }
 
     void SimpleLogger::trace(const std::string &msg, const std::exception &e) {
+        if(!isTraceEnabled())
+            return;
         print(TRACE, msg, e);
     }
 
 
     void SimpleLogger::debug(const char *msg) {
+        if(!isDebugEnabled())
+            return;
         print(DEBUG, msg);
     }
 
     void SimpleLogger::debug(const std::string &format, ...) {
+        if(!isDebugEnabled())
+            return;
         va_list l;
         va_start(l, format);
         print(DEBUG, format, l);
@@ -114,15 +123,21 @@ namespace logger {
     }
 
     void SimpleLogger::debug(const std::string &msg, const std::exception &e) {
+        if(!isDebugEnabled())
+            return;
         print(DEBUG, msg, e);
     }
 
 
     void SimpleLogger::info(const char *msg) {
+        if(!isInfoEnabled())
+            return;
         print(INFO, msg);
     }
 
     void SimpleLogger::info(const std::string &format, ...) {
+        if(!isInfoEnabled())
+            return;
         va_list l;
         va_start(l, format);
         print(INFO, format, l);
@@ -130,15 +145,21 @@ namespace logger {
     }
 
     void SimpleLogger::info(const std::string &msg, const std::exception &e) {
+        if(!isInfoEnabled())
+            return;
         print(INFO, msg, e);
     }
 
 
     void SimpleLogger::warn(const char *msg) {
+        if(!isWarnEnabled())
+            return;
         print(WARN, msg);
     }
 
     void SimpleLogger::warn(const std::string &format, ...) {
+        if(!isWarnEnabled())
+            return;
         va_list l;
         va_start(l, format);
         print(WARN, format, l);
@@ -146,15 +167,21 @@ namespace logger {
     }
 
     void SimpleLogger::warn(const std::string &msg, const std::exception &e) {
+        if(!isWarnEnabled())
+            return;
         print(WARN, msg, e);
     }
 
 
     void SimpleLogger::error(const char *msg) {
+        if(!isErrorEnabled())
+            return;
         print(ERROR, msg);
     }
 
     void SimpleLogger::error(const std::string &format, ...) {
+        if(!isErrorEnabled())
+            return;
         va_list l;
         va_start(l, format);
         print(ERROR, format, l);
@@ -162,15 +189,21 @@ namespace logger {
     }
 
     void SimpleLogger::error(const std::string &msg, const std::exception &e) {
+        if(!isErrorEnabled())
+            return;
         print(ERROR, msg, e);
     }
 
 
     void SimpleLogger::fatal(const char *msg) {
+        if(!isFatalEnabled())
+            return;
         print(FATAL, msg);
     }
 
     void SimpleLogger::fatal(const std::string &format, ...) {
+        if(!isFatalEnabled())
+            return;
         va_list l;
         va_start(l, format);
         print(FATAL, format, l);
@@ -178,6 +211,8 @@ namespace logger {
     }
 
     void SimpleLogger::fatal(const std::string &msg, const std::exception &e) {
+        if(!isFatalEnabled())
+            return;
         print(FATAL, msg, e);
     }
 }

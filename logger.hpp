@@ -60,7 +60,7 @@ namespace logger {
     virtual bool isErrorEnabled() = 0;
     virtual bool isFatalEnabled() = 0;
 
-    virtual ~Logger() {};
+    virtual ~Logger() = default;
   };
 }
 

@@ -9,7 +9,7 @@
 using namespace logger;
 
 class testexception : public std::exception {
-    const char * what() const noexcept {
+    const char * what() const noexcept override {
         return "This was a test!";
     }
 };
